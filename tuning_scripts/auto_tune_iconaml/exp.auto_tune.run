@@ -1,0 +1,165 @@
+#! /usr/bin/bash
+#=============================================================================
+
+# mistral cpu batch job parameters
+# --------------------------------
+#SBATCH --account=bd1179
+
+#SBATCH --job-name=exp.auto_tune.run
+#SBATCH --partition=compute
+#SBATCH --chdir=/work/bd1179/b309170/icon-ml_models/icon-a-ml/run
+#SBATCH --nodes=16
+#SBATCH --threads-per-core=1
+#SBATCH --output=/work/bd1179/b309170/icon-ml_models/icon-a-ml/run/log.auto_tune.%j.o
+#SBATCH --error=/work/bd1179/b309170/icon-ml_models/icon-a-ml/run/log.auto_tune.%j.e
+#SBATCH --exclusive
+#SBATCH --mem=200G
+#SBATCH --time=08:00:00
+
+# Load modules
+# ---------------------------------
+module load python3
+
+#=============================================================================
+set -x
+ulimit -s 2097152
+ulimit -c 0
+#=============================================================================
+
+#
+# ICON run script:
+# !ATTENTION! Do not change the format of the following lines.
+#             They are evaluated by checksuite scripts.
+# created by ./run/make_target_runscript
+# target machine is bull_milan
+# target use_compiler is intel
+# with_mpi=yes
+# with_openmp=no
+# memory_model=large
+# submit with sbatch
+#
+#=============================================================================
+
+# OpenMP environment variables
+# ----------------------------
+export OMP_NUM_THREADS=1
+export ICON_THREADS=1
+export OMP_SCHEDULE=dynamic,1
+export OMP_DYNAMIC="false"
+export OMP_STACKSIZE=200M
+
+# MPI variables
+# -------------
+no_of_nodes=${SLURM_JOB_NUM_NODES:=1}
+mpi_procs_pernode=$((${SLURM_JOB_CPUS_PER_NODE%%\(*} / 1))
+((mpi_total_procs=no_of_nodes * mpi_procs_pernode))
+
+#=============================================================================
+
+# load local setting, if existing
+# -------------------------------
+if [ -a ../setting ]
+then
+  echo "Load Setting"
+  . ../setting
+fi
+
+# environment variables for the experiment and the target system
+# --------------------------------------------------------------
+export SLURM_DIST_PLANESIZE="8"
+export KMP_AFFINITY="granularity=fine,scatter"
+export KMP_LIBRARY="turnaround"
+export KMP_KMP_SETTINGS="1"
+export OMP_WAIT_POLICY="active"
+export KMP_WARNINGS="0"
+export MKL_ENABLE_INSTRUCTIONS="AVX2"
+export MKL_DEBUG_CPU_TYPE="5"
+export KMP_LIBRARY="turnaround"
+export OMPI_MCA_osc="pt2pt"
+export UCX_IB_ADDR_TYPE="ib_global"
+export OMPI_MCA_coll="^ml"
+export OMPI_MCA_coll_hcoll_enable="1"
+export HCOLL_MAIN_IB="mlx5_0:1"
+export UCX_NET_DEVICES="mlx5_0:1"
+export UCX_TLS="mm,cma,dc_mlx5,dc_x,self"
+export UCX_UNIFIED_MODE="y"
+export HDF5_USE_FILE_LOCKING="FALSE"
+export OMPI_MCA_io="romio321"
+export MALLOC_TRIM_THRESHOLD_="-1"
+export OMPI_MCA_opal_common_ucx_opal_mem_hooks="1" # Resolves UCX warning
+
+# load profile
+# ------------
+if [[ -a  /etc/profile ]]
+then
+	. /etc/profile
+fi
+
+#=============================================================================
+
+# directories with absolute paths
+# -------------------------------
+thisdir=$(pwd)
+basedir=${thisdir%/*}
+export basedir
+
+icon_data_rootFolder="/pool/data/ICON"
+icon_data_poolFolder="${icon_data_rootFolder:-/pool/data/ICON}/grids/public/mpim/0019"
+export icon_data_poolFolder
+
+# how to start the icon model
+# ---------------------------
+export MODEL="${basedir}/bin/icon"
+export START="srun -l --kill-on-bad-exit=1 --nodes=${SLURM_JOB_NUM_NODES:-1} --distribution=plane --hint=nomultithread --ntasks=$((no_of_nodes * mpi_procs_pernode)) --ntasks-per-node=${mpi_procs_pernode} --cpus-per-task=$((1 * OMP_NUM_THREADS)) ${MODEL}"
+export ICON_SIM_LENGTH="$1"
+export INIT_PARAMS="$2"
+export EXPNAME="ag_atm_amip_r2b5_cvtfall_entrmid_05_cov_auto_tune"
+
+#=============================================================================
+
+# Specify simulation length and output frequency
+
+# Start and end date+time based on ICON_SIM_LENGTH
+case "$ICON_SIM_LENGTH" in
+  "day")
+    export end_date="${end_date:-1979-01-03T00:00:00Z}"
+    export output_interval="P1D"
+    ;;
+  "week")
+    export end_date="${end_date:-1979-01-09T00:00:00Z}"
+    export output_interval="P7D"
+    ;;
+  "month")
+    export end_date="${end_date:-1979-02-03T00:00:00Z}"
+    export output_interval="P1M"
+    ;;
+  "halfyear") # Wasn't very useful
+    export end_date="${end_date:-1979-07-03T00:00:00Z}"
+    export output_interval="P6M"
+    ;;
+  "year")
+    export end_date="${end_date:-1980-01-03T00:00:00Z}"
+    export output_interval="P1Y"
+    ;;
+  *)
+    echo "Invalid ICON_SIM_LENGTH: $ICON_SIM_LENGTH"
+    ;;
+esac
+
+# Experiment directory
+export EXPDIR=/scratch/b/b309170/experiments/${EXPNAME}_${ICON_SIM_LENGTH}_${INIT_PARAMS}
+
+# Run tuning script that calls ICON 
+# ---------------------------------------------------------
+echo "============================"
+echo "Starting auto_tune.py script: calls exp.${EXPNAME}.run"
+echo "============================"
+
+python3 auto_tune.py ${EXPNAME} ${ICON_SIM_LENGTH} ${INIT_PARAMS}
+
+#-----------------------------------------------------------------------------
+	
+# exit 0
+#
+# vim:ft=sh
+#-----------------------------------------------------------------------------

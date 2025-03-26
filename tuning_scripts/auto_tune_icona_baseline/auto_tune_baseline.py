@@ -186,7 +186,7 @@ def early_stopping(Xi):
 def optimize(objective_bounds):
     # Default Sundqvist parameters
     abcdefghij_publication_240101 = (0.968, 0.8, 0.7, 2, 0.25) #crs, crt, csatsc, nex, cinv
-    # Additional parameters that might need to be considered if the desired goal cannot be reached with the cloud cover equation parameters only. pr0 should be between 0.6 and 1.0.
+    # Additional parameters that need to be considered if the desired goal cannot be reached with the cloud cover equation parameters only. pr0 should be between 0.6 and 1.0.
     additional_params = (1, 2.1e-4, 2.0e-4, 4.0e-4, 2.25, 15, 0.8, 0.8, 0.4, 0.8, 20, 180, 20, 80) # (pr0, entrmid, entrpen, entrdd, cvtfall, ccraut, cinhomi, cinhoml1, cinhoml2, cinhoml3, cn1lnd, cn2lnd, cn1sea, cn2sea)
     match INIT_PARAMS:
         case 'orig':
