@@ -1,5 +1,0 @@
-Simulation data:
-/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_cvtfall_entrmid_crt_05_20yrs
-
-Evaluation:
-https://swift.dkrz.de/v1/dkrz_3a9fa768-cd4d-4c27-b09a-82c2f06a657e/iconeval/ag_atm_amip_r2b5_cvtfall_entrmid_crt_05_20yrs/index.html

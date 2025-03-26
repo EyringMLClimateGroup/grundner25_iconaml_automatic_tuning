@@ -68,7 +68,7 @@ def compute_relax_bounds(DS_avrg):
 
 # Compute bounds for the objective function. 
 def define_bounds():
-    # Observation bounds extracted from https://swift.dkrz.de/v1/dkrz_adf90815-96ce-4411-81ae-4db5e76adcbc/esmvaltool_output/index.html.
+    # Some OBS bounds extracted from https://swift.dkrz.de/v1/dkrz_adf90815-96ce-4411-81ae-4db5e76adcbc/esmvaltool_output/index.html.
     obs_bounds = {}
     obs_bounds['rsut_min'] = 100
     obs_bounds['rsut_max'] = 110
