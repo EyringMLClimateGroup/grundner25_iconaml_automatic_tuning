@@ -1,0 +1,4 @@
+## Tuning the ICON-A baseline
+To run the tuning scripts one starts by running `run_different_tuning_exp.sh`, which calls `exp.auto_tune_baseline.run` passing the desired ICON simulation duration and the initial tuning parameter value set. Then `exp.auto_tune_baseline.run` calls `auto_tune_baseline.py` which contains the main code (defining, e.g., the metrics to tune towards and the Nelder-Mead code wrapping around and calling ICON repeatedly). In the log.*.o files you find the (ICON) output of the tuning pipeline and the tested parameters with the corresponding error of each ICON simulation. You can find in the comments of `run_different_tuning_exp.sh` which output belongs to which job (e.g., log.auto_tune.12876603.o is the output of the tuning run with daily simulations starting with the initial set of parameters from Grundner et al., 2024. and the default ICON-A model parameters).
+
+This code matches the code used to tune the ICON-A-ML model.

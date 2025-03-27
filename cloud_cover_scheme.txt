@@ -1,0 +1,62 @@
+! The data-driven cloud cover scheme with adaptable parameters
+
+! These are the parameters for the cc equation
+!
+REAL :: a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10
+!
+! Extract the parameters from echam_cov_config with the values from the runscript
+!
+a_1 = echam_cov_config(jg)% param(1)
+a_2 = echam_cov_config(jg)% param(2)
+a_3 = echam_cov_config(jg)% param(3)
+a_4 = echam_cov_config(jg)% param(4)
+a_5 = echam_cov_config(jg)% param(5)
+a_6 = echam_cov_config(jg)% param(6)
+a_7 = echam_cov_config(jg)% param(7)
+a_8 = echam_cov_config(jg)% param(8)
+a_9 = echam_cov_config(jg)% param(9)
+a_10 = echam_cov_config(jg)% param(10)
+!
+! Data-driven cloud cover scheme 
+! 
+DO jk = jkscov,klev
+    DO jl = jcs,kproma
+        !
+        ! altitude cutoff (18 km)
+        IF (zf(jl,jk) < zf_cutoff) THEN
+        ! Check that the temperature makes sense
+        IF (abs(ptm1(jl ,jk)) < 1e-5) THEN
+            EXIT
+        END IF
+        !
+        ! Approximate relative humidity in the present cell
+        rh_tmp = exp((17.67*(273.15 - ptm1(jl,jk))) / (ptm1(jl,jk) - 29.65))
+        rh = 0.00263 * papm1(jl,jk) * pqm1(jl,jk) * rh_tmp
+        ! Approximate relative humidity in the cell above
+        rh_tmp_above = exp((17.67*(273.15 - ptm1(jl,jk-1))) / (ptm1(jl,jk-1) - 29.65))
+        rh_above = 0.00263 * papm1(jl,jk-1) * pqm1(jl,jk-1) * rh_tmp_above
+        ! Approximate the vertical derivative of relative humidity in the simplest way possible
+        rh_z = (rh_above-rh)/(zf(jl,jk-1)-zf(jl,jk))
+        !
+        ! First normalize the input variables in this implementation (here one could consider to adjust the eq. to a new distr.)
+        rh_norm = (rh - 6.02512234E-01) / 3.32494615E-01
+        T_norm = (ptm1(jl,jk) - 2.57065512E+02) / 3.00533874E+01
+        qc_norm = (pxlm1(jl,jk) - 2.25493498E-05) / 5.69702638E-05
+        qi_norm = (pxim1(jl,jk) - 3.38180032E-06) / 1.01308124E-05
+        rh_z_norm = (rh_z + 4.76200071E-05) / 2.58065098E-04  
+        !
+        ! Ensure dC/dRH >= 0 
+        rh_norm = max(rh_norm, 1/(2.*a_3*a_4)*(-a_3*T_norm**2 - a_1))
+        !
+        ! Compute the three terms in the equation
+        I1 = a_1*rh_norm - a_2*T_norm + a_3*rh_norm*(a_4*rh_norm + T_norm**2) + a_7
+        I2 = rh_z_norm**2*(a_5*rh_z_norm + a_6) 
+        I3 = -a_8/(qc_norm + a_9*qi_norm + a_10)
+        !
+        ! prediction
+        pacl_vol(jl,jk) = max(min(I1 + I2 + I3, 100.0_wp), 0.0_wp)/100.0_wp
+        pacl_area(jl,jk) = max(min(I1 + I2 + I3, 100.0_wp), 0.0_wp)/100.0_wp
+        !
+        END IF
+    END DO  !jl
+END DO   !jk

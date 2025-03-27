@@ -9,40 +9,18 @@ The current release on zenodo can be found here:
 
 ## List of Figures
 
-- Fig 1: Sketch of the automatic tuning pipeline
-- [Fig 2](XX), [Code](xx): Qualitative evaluation of 20-year ICON-A-ML simulations using parameter
+- [Fig 1](fig_1_tuning_pipeline/fig_1.pdf): Sketch of the automatic tuning pipeline
+- [Fig 2](simulation_scripts_and_evaluation/fig_2.pdf): Qualitative evaluation of 20-year ICON-A-ML simulations using parameter
 settings extracted at three different stages of the tuning pipeline
 - [Fig 3](fig_3_and_S5_biases/fig_3.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon.ipynb): Biases of 20-year ICON-A(-ML) simulations in three key climate metrics
-- [Fig 4](XX), [Code](xx): Cloud differences in +4K ICON-A-ML simulations
-- [Fig S1](XX), [Code](xx): Climate metrics of three 10-year ICON-A simulations
-- [Fig S2](XX), [Code](xx): ICON-A sensitivity analysis
-- [Fig S3](XX), [Code](xx): Zonal means of nine important climate variables from 20-year simulations
-- [Fig S4](XX), [Code](xx): Like Fig. 2, but showing zonal means of the top of the atmosphere longwave and shortwave radiation.
-- [Fig S5](XX), [Code](xx): (Bias) differences between the panels of each column in Fig. 3
-- [Fig S6](XX), [Code](XX): Like Fig. 3, but showing column-integrated cloud ice (ice water path) for the ICON-ML and the automatically tuned ICON-A model
-simulations.
+- [Fig 4](fig_4_plus4K/fig_4.pdf), [Code](fig_4_plus4K/cloud_sensitivities.ipynb): Cloud differences in +4K ICON-A-ML simulations
+- [Fig S1](fig_S1_man_tuned/fig_S1.pdf), [Code](fig_S1_man_tuned/giorgetta_fig_7.ipynb): Climate metrics of three 10-year ICON-A simulations
+- [Fig S2](fig_S2_sensitivity/fig_S2.pdf), [Code](fig_S2_sensitivity/2402_sensitivity_analysis.ipynb): ICON-A sensitivity analysis
+- [Fig S3](simulation_scripts_and_evaluation/fig_S3.pdf): Zonal means of nine important climate variables from 20-year simulations
+- [Fig S4](simulation_scripts_and_evaluation/fig_S4.pdf): Like Fig. 2, but showing zonal means of the top of the atmosphere longwave and shortwave radiation
+- [Fig S5](fig_3_and_S5_biases/fig_S5.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon.ipynb): (Bias) differences between the panels of each column in Fig. 3
+- [Fig S6](simulation_scripts_and_evaluation/fig_S6.pdf): Like Fig. 3, but showing column-integrated cloud ice (ice water path) for the ICON-ML and the automatically tuned ICON-A model simulations
 
-## FOLLOWING NEEDS TO BE UPDATED
+## Reproducing the results
 
-## Data
-
-To reproduce the results it is first necessary to have access to accounts on [DKRZ/Levante](https://docs.dkrz.de/). Then one can coarse-grain and preprocess the DYAMOND and ERA5/ERA5.1 data sets:
-- Guide for how to coarse-grain the DYAMOND data: [strategy.md](sec2_data/sec21_DYAMOND/strategy.md)
-- To then pre-process the DYAMOND data: [preprocessing.ipynb](sec2_data/sec21_DYAMOND/preprocessing.ipynb) 
-- Scripts to coarse-grain ERA5 data (1979-2021, first day of every quarter): [horizontally](sec2_data/sec22_ERA5/horizontal_coarse-graining), [vertically](sec2_data/vertical_coarse-graining)
-
-It suffices to coarse-grain the variables: clc/cc, cli/ciwc, clw/clwc, hus/q, pa, ta/t, ua/u, va/v, zg/z
-
-## Dependencies
-The results were produced with the version numbers indicated below:
-- PySR 0.10.1 [https://github.com/MilesCranmer/PySR]
-- GP-GOMEA [https://github.com/marcovirgolin/GP-GOMEA]
-- mlxtend 0.20.0 [https://github.com/rasbt/mlxtend]
-- scikit-learn 1.0.2 [https://scikit-learn.org/]
-- SymPy 1.10.1 [https://github.com/sympy]
-- SciPy 1.8.1 [https://github.com/scipy/]
-- TensorFlow 2.7.0 [https://tensorflow.org/]
-
-To create a working environment you can run the following line:
-```
-conda install -c conda-forge tensorflow==2.7.0 scipy==1.8.1 sympy==1.10.1 scikit-learn==1.0.2 mlxtend==0.20.0 pysr==0.10.1
+All ICON simulations were performed on [DKRZ/Levante](https://docs.dkrz.de/) with ICON-A 2.6.4. with two implementation errors fixed in the turbulence scheme (setting maximum mixing length to 150m and correcting the computation of the turbulent length scale so that it matches Pithan et al., 2015 and Giorgetta et al., 2018). The resulting ICON-A 2.6.4. code can be found in our [GitLab repository](https://gitlab.dkrz.de/icon-ml/icon_developments/icon-a-ml/-/tree/icon-2-6-4-ml_cloud_cover?ref_type=heads). You can find the official stable ICON-A 2.6.4. release on ICON-DKRZ-GitLab [here](https://gitlab.dkrz.de/icon/icon/-/tree/icon-2.6.4). To turn it into our ICON-A-ML model, the data-driven cloud cover scheme needs to be implemented in ICON-A with adaptable parameter as shown [here](cloud_cover_scheme.txt). The scripts for automatically tuning the ICON-A(-ML) can be found in [this folder](tuning_scripts). The code for deriving the data-driven cloud cover scheme can be found in the [GitHub repository](https://github.com/EyringMLClimateGroup/grundner23james_EquationDiscovery_CloudCover) of [Grundner et al., 2024](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2023MS003763). In the subfolders of [simulation_scripts_and_evaluation](simulation_scripts_and_evaluation) you can find the runscripts and ESMValTool evaluation plots of all 20-year AMIP simulations performed for our manuscript.
