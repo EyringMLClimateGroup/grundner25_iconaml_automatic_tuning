@@ -1,0 +1,51 @@
+dask:
+  use: iconeval
+  profiles:
+    iconeval:
+      cluster:
+        memory_limit: 3880MB
+        n_workers: 8
+        threads_per_worker: 2
+        type: distributed.LocalCluster
+extra_facets_dir: []
+output_dir: /work/bd1179/output_iconeval/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_20250207_172513UTC/esmvaltool_output
+auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
+search_esgf: never
+download_dir: /work/bd0854/DATA/ESMValTool2/download
+max_parallel_tasks: 8
+log_level: info
+exit_on_warning: false
+output_file_type: png
+remove_preproc_dir: true
+compress_netcdf: false
+save_intermediary_cubes: false
+config_developer_file: null
+profile_diagnostic: false
+rootpath:
+  CMIP3:
+    /work/bd0854/DATA/ESMValTool2/CMIP3: DKRZ
+  CMIP5:
+    /work/bd0854/DATA/ESMValTool2/CMIP5_DKRZ: DKRZ
+    /work/bd0854/b309141/additional_CMIP5: DKRZ
+  CMIP6:
+    /work/bd0854/DATA/ESMValTool2/CMIP6_DKRZ: DKRZ
+    /work/bd0854/b309141/additional_CMIP6: DKRZ
+  CORDEX:
+    /work/ik1017/C3SCORDEX/data/c3s-cordex/output: BADC
+  ICON:
+    /work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments: default
+  EMAC:
+    /work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments: default
+  OBS:
+    /work/bd0854/DATA/ESMValTool2/OBS: default
+  OBS6:
+    /work/bd0854/DATA/ESMValTool2/OBS: default
+  obs4MIPs:
+    /work/bd0854/DATA/ESMValTool2/OBS: default
+  ana4mips:
+    /work/bd0854/DATA/ESMValTool2/OBS: default
+  native6:
+    /work/bd0854/DATA/ESMValTool2/RAWOBS: default
+    /work/bd0854/DATA/ESMValTool2/OBS: default
+  RAWOBS: /work/bd0854/DATA/ESMValTool2/RAWOBS
+  default: /work/bd0854/b309141/
