@@ -31,14 +31,14 @@ find the runscripts and ESMValTool evaluation plots of all 20-year AMIP
 simulations performed for our manuscript. To reproduce the ESMValTool results,
 ESMValTool
 [v2.12.0](https://docs.esmvaltool.org/en/latest/quickstart/installation.html)
-is required. An [ESMValTool configuration
+is required. An ESMValTool [configuration
 file](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/configure.html)
 tailored to [DKRZ's Levante](https://docs.dkrz.de/doc/levante/) is available in
 this directory at `ESMValTool_config-user.yml`. This file needs to be put into
-`~/.config/esmvaltool/` and slightly adapted (e.g., output paths). [ESMValTool
-recipes](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/recipe/overview.html)
+`~/.config/esmvaltool/` and slightly adapted (e.g., output paths). ESMValTool
+[recipes](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/recipe/overview.html)
 can be found on the websites given by the *Evaluation* link in the `source.txt`
-file of the subfolders (Click on *debug page* -> Select a recipe -> scroll to
+files of the subfolders (Click on *debug page* -> Select a recipe -> scroll to
 the bottom -> Download the *recipe_\*.yml* file. ESMValTool can be then be run
 with
 
