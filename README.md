@@ -5,7 +5,7 @@ Data-driven equation for cloud cover implemented in ICON-A 2.6.4., the atmospher
 
 Author: Arthur Grundner, [arthur.grundner@dlr.de](mailto:arthur.grundner@dlr.de)
 
-The current release on zenodo can be found here:
+The current release on zenodo can be found here: [![DOI](https://zenodo.org/badge/950052003.svg)](https://doi.org/10.5281/zenodo.15194060)
 
 ## List of Figures
 
