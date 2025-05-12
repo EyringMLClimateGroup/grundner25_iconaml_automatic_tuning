@@ -1,7 +1,7 @@
 # Reduced cloud cover errors in a hybrid AI-climate model through equation discovery and automatic tuning
 Data-driven equation for cloud cover implemented in ICON-A 2.6.4., the atmospheric component of the ICON climate model. The resulting ICON-A-MLe climate model is tuned automatically, surpassing the projection skill of the native ICON-A model.
 
-> Grundner, A., Beucler, T., Savre, J., Lauer, A., Schlund, M. & Eyring, V. (2025). Reduced cloud cover errors in hybrid climate models through a novel combination of data-driven parameterizations and automatic tuning
+> Grundner, A., Beucler, T., Savre, J., Lauer, A., Schlund, M. & Eyring, V. (2025). Reduced cloud cover errors in hybrid climate models through a novel combination of data-driven parameterizations and automatic tuning. [Preprint](https://arxiv.org/abs/2505.04358).
 
 Author: Arthur Grundner, [arthur.grundner@dlr.de](mailto:arthur.grundner@dlr.de)
 
