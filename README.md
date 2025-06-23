@@ -12,13 +12,13 @@ The current release on zenodo can be found here: [![DOI](https://zenodo.org/badg
 - [Fig 1](fig_1_tuning_pipeline/fig_1.pdf): Sketch of the automatic tuning pipeline
 - [Fig 2](simulation_scripts_and_evaluation/fig_2.pdf): Qualitative evaluation of 20-year ICON-A-MLe simulations using parameter
 settings extracted at three different stages of the tuning pipeline
-- [Fig 3](fig_3_and_S5_biases/fig_3.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon.ipynb): Biases of 20-year ICON-A(-ML) simulations in three key climate metrics
+- [Fig 3](fig_3_and_S5_biases/fig_3.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon_a.ipynb): Biases of 20-year ICON-A(-ML) simulations in three key climate metrics
 - [Fig 4](fig_4_plus4K/fig_4.pdf), [Code](fig_4_plus4K/cloud_sensitivities.ipynb): Cloud differences in +4K ICON-A-MLe simulations
 - [Fig S1](fig_S1_man_tuned/fig_S1.pdf), [Code](fig_S1_man_tuned/giorgetta_fig_7.ipynb): Climate metrics of three 10-year ICON-A simulations
 - [Fig S2](fig_S2_sensitivity/fig_S2.pdf), [Code](fig_S2_sensitivity/2402_sensitivity_analysis.ipynb): ICON-A sensitivity analysis
 - [Fig S3](simulation_scripts_and_evaluation/fig_S3.pdf): Zonal means of nine important climate variables from 20-year simulations
 - [Fig S4](simulation_scripts_and_evaluation/fig_S4.pdf): Like Fig. 2, but showing zonal means of the top of the atmosphere longwave and shortwave radiation
-- [Fig S5](fig_3_and_S5_biases/fig_S5.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon.ipynb): (Bias) differences between the panels of each column in Fig. 3
+- [Fig S5](fig_3_and_S5_biases/fig_S5.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon_a.ipynb): (Bias) differences between the panels of each column in Fig. 3
 - [Fig S6](simulation_scripts_and_evaluation/fig_S6.pdf): Like Fig. 3, but showing column-integrated cloud ice (ice water path) for the ICON-A-MLe and the automatically tuned ICON-A model simulations
 
 ## Reproducing the results
