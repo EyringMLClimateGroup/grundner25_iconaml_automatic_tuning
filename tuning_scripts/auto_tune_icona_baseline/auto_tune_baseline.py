@@ -183,6 +183,37 @@ def early_stopping(Xi):
         raise StopIteration("Early stopping: Loss below tolerance")
     return 0
 
+# To extract all the output from a log file
+def create_list(file_name, log_path):
+    '''
+        Returns a list of parameters, losses, losses after the TOA balance and the TOA metric value from a given log_file (file_name) that is located in a given path (log_path)
+    '''
+    no_params = 19 # For the ICON-A baseline
+    param_values = np.zeros((1000, no_params))
+    loss_values = []; net_toa_metric = []; loss_after_toa_values = []
+    file_path = os.path.join(log_path, file_name)
+    print_bool = False
+    eval_count = 0
+    with open(file_path, 'r') as file:
+        for line in file:
+            if print_bool:
+                for param_ind in range(no_params):
+                    # Append certain parameter value
+                    param_values[eval_count, param_ind] = float(line.split(',')[param_ind])
+                print_bool = False
+                eval_count += 1
+            # Append line after "Current list of parameters to tune"
+            if line.startswith("Current list of parameters to tune"):
+                print_bool = True
+            if line.startswith("Loss after adding clt_SE_pac:"):
+                loss_values.append(float(line.split(':')[1]))
+            if line.startswith("Loss after adding net_toa:"):
+                loss_after_toa_values.append(float(line.split(':')[1]))
+            # TOA value
+            if line.startswith("Metric net_toa:"):
+                net_toa_metric.append(float(file.readline()[2:-2]))
+    return param_values[:len(loss_values), :], np.array(loss_values), np.array(loss_after_toa_values), np.array(net_toa_metric)
+
 def optimize(objective_bounds):
     # Default Sundqvist parameters
     abcdefghij_publication_240101 = (0.968, 0.8, 0.7, 2, 0.25) #crs, crt, csatsc, nex, cinv
@@ -197,9 +228,16 @@ def optimize(objective_bounds):
             initial_params = (0.9142084454021847, 0.5959131468894869, 0.7016983204535419, 2.169446548166456, 0.24862183830475587, 1.0588948615278229, 0.00021809514111887957, 0.000205913392405527, 0.00039846920997366024, 2.186463783358046, 16.697049053748103, 0.8457431126829968, 0.8648751522165565, 0.3898800218636592, 0.8324526207821763, 19.98802406295018, 177.60991737322595, 20.20550621794748, 81.94998525907712)
         case 'month_refined': # From log.auto_tune_baseline.13850767.o. Loss of 0.
             initial_params = (0.9142084454021847, 0.5959131468894869, 0.7016983204535419, 2.169446548166456, 0.24862183830475587, 1.0588948615278229, 0.00021809514111887957, 0.000205913392405527, 0.00039846920997366024, 2.186463783358046, 16.697049053748103, 0.8457431126829968, 0.8648751522165565, 0.3898800218636592, 0.8324526207821763, 20.98742526609769, 177.60991737322595, 20.20550621794748, 81.94998525907712)
-        case 'year_refined_1': # From log.auto_tune_baseline.13852199.o.
-            initial_params = (0.99, 0.595913147, 0.7016983204535419, 2.169446548166456, 0.24862183830475587, 1.0588948615278229, 0.00021809514111887957, 0.000205913392405527, 0.00039846920997366024, 2.186463783358046, 16.697049053748103, 0.8457431126829968, 0.8648751522165565, 0.3898800218636592, 0.8324526207821763, 20.98742526609769, 177.60991737322595, 20.20550621794748, 81.94998525907712)
-        case 'year_refined_2': # Manual nudging for good TOA balance. Combination of crs and crt.
+        case 'year_refined': # From log.auto_tune_baseline.13852199.o.
+            log_path_icona = "/work/bd1083/b309170/published_code/grundner25pnas_iconaml_automatic_tuning/tuning_scripts/auto_tune_icona_baseline"
+            # First year-long tuning. Read parameter values and corresponding losses
+            param_values, loss_values, loss_after_toa_values, _ = create_list("log.auto_tune.13852199.o", log_path_icona)
+            # Index where loss is minimal.
+            min_ind = np.argmin(loss_values)
+            # Adjust initial guess by adding a weighted difference, motivated by reducing loss_after_toa_values
+            C = loss_after_toa_values[0]/(loss_after_toa_values[0] - loss_after_toa_values[min_ind])
+            initial_params = param_values[0] + C*(param_values[min_ind] - param_values[0])
+        case 'year_refined_toa': # From log.auto_tune_baseline.13852199.o. Manual nudging for good TOA balance. Combination of crs and crt.
             initial_params = (0.968, 0.665, 0.7016983204535419, 2.169446548166456, 0.24862183830475587, 1.0588948615278229, 0.00021809514111887957, 0.000205913392405527, 0.00039846920997366024, 2.186463783358046, 16.697049053748103, 0.8457431126829968, 0.8648751522165565, 0.3898800218636592, 0.8324526207821763, 20.98742526609769, 177.60991737322595, 20.20550621794748, 81.94998525907712)
     # Could also try BFGS or L-BFGS here
     res = minimize(call_icon, (initial_params), args=(objective_bounds), bounds=bounds, method='Nelder-Mead', options={'disp': True}, callback=early_stopping)

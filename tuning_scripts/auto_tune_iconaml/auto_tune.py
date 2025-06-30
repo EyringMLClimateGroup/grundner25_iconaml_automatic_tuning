@@ -177,6 +177,37 @@ def early_stopping(Xi):
         raise StopIteration("Early stopping: Loss below tolerance")
     return 0
 
+# To extract all the output from a log file
+def create_list(file_name, log_path):
+    '''
+        Returns a list of parameters, losses, losses after the TOA balance and the TOA metric value from a given log_file (file_name) that is located in a given path (log_path)
+    '''
+    no_params = 24 # For ICON-A-MLe
+    param_values = np.zeros((1000, no_params))
+    loss_values = []; net_toa_metric = []; loss_after_toa_values = []
+    file_path = os.path.join(log_path, file_name)
+    print_bool = False
+    eval_count = 0
+    with open(file_path, 'r') as file:
+        for line in file:
+            if print_bool:
+                for param_ind in range(no_params):
+                    # Append certain parameter value
+                    param_values[eval_count, param_ind] = float(line.split(',')[param_ind])
+                print_bool = False
+                eval_count += 1
+            # Append line after "Current list of parameters to tune"
+            if line.startswith("Current list of parameters to tune"):
+                print_bool = True
+            if line.startswith("Loss after adding clt_SE_pac:"):
+                loss_values.append(float(line.split(':')[1]))
+            if line.startswith("Loss after adding net_toa:"):
+                loss_after_toa_values.append(float(line.split(':')[1]))
+            # TOA value
+            if line.startswith("Metric net_toa:"):
+                net_toa_metric.append(float(file.readline()[2:-2]))
+    return param_values[:len(loss_values), :], np.array(loss_values), np.array(loss_after_toa_values), np.array(net_toa_metric)
+
 def optimize(objective_bounds):
     # From the JAMES, 2024 publication
     abcdefghij_publication_240101 = (38.6562122, 43.53500518, 19.78403208, 1.13637902, 0.35299939, 4.04888686, 44.21730274, 2.03128527, 0.66971589, 0.6409019)
@@ -197,8 +228,17 @@ def optimize(objective_bounds):
             # From log.auto_tune.12892616.o.
             initial_params = (40.999209779803124, 68.3394558219378, 23.484231887639147, 1.3295597852519498, 0.35639296308199575, 4.400149863408263, 11.534138730085267, 2.5751632819728894, 0.7585204066979654, 0.6649951451999998, 1.0168970920619893, 0.00019872555789959162, 0.00024179711798483726, 0.0003490493071823422, 1.9843481475548161, 10.358651006058587, 0.9151582312253206, 0.8301582264050795, 0.38180556104206254, 0.8890741916120648, 19.084167204527887, 216.2848380476869, 20.901457054208564, 42.03772802962055)
         case 'refined_year':
-            # As previous runs but with b noticeably increased to hopefully fix the TOA balance.
-            initial_params = (40.999209779803124, 76, 23.484231887639147, 1.3295597852519498, 0.35639296308199575, 4.400149863408263, 11.534138730085267, 2.5751632819728894, 0.7585204066979654, 0.6649951451999998, 1.0168970920619893, 0.00019872555789959162, 0.00024179711798483726, 0.0003490493071823422, 1.9843481475548161, 10.358651006058587, 0.9151582312253206, 0.8301582264050795, 0.38180556104206254, 0.8890741916120648, 19.084167204527887, 216.2848380476869, 20.901457054208564, 42.03772802962055)
+            # From log.auto_tune.12956787.o
+            log_path_iconaml = "/work/bd1083/b309170/published_code/grundner25pnas_iconaml_automatic_tuning/tuning_scripts/auto_tune_iconaml"
+            # First year-long tuning. Read parameter values and corresponding losses
+            param_values, loss_values, loss_after_toa_values, _ = create_list("log.auto_tune.12956787.o", log_path_iconaml)
+            # Index where loss is minimal.
+            min_ind = np.argmin(loss_values)
+            # Adjust initial guess by adding a weighted difference, motivated by reducing loss_after_toa_values
+            C = loss_after_toa_values[0]/(loss_after_toa_values[0] - loss_after_toa_values[min_ind])
+            initial_params = param_values[0] + C*(param_values[min_ind] - param_values[0])
+            # For some reason, the second parameter was rounded (from 76.4 to 76)
+            initial_params[1] = round(initial_params[1])
             
         ## In the following auto tuning chain we tested whether starting from ERA5-refined parameters would be beneficial (it wasn't) ##
         case 'refined':
