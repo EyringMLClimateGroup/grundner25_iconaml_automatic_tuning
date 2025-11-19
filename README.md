@@ -12,16 +12,20 @@ The current release on zenodo can be found here: [![DOI](https://zenodo.org/badg
 - [Fig 1](fig_1_tuning_pipeline/fig_1.pdf): Sketch of the automatic tuning pipeline
 - [Fig 2](simulation_scripts_and_evaluation/fig_2.pdf): Qualitative evaluation of 20-year ICON-A-MLe simulations using parameter
 settings extracted at three different stages of the tuning pipeline
-- [Fig 3](fig_3_and_S5_biases/fig_3.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon_a.ipynb): Biases of 20-year ICON-A(-ML) simulations in three key climate metrics
-- [Fig 4](fig_4_plus4K/fig_4.pdf), [Code](fig_4_plus4K/cloud_sensitivities.ipynb): Cloud differences in +4K ICON-A-MLe simulations
+- [Fig 3](icona_vs_iconamle_drivers_added_value/fig_3.pdf), [Code_1](icona_vs_iconamle_drivers_added_value/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](icona_vs_iconamle_drivers_added_value/compare_icon_ml_to_icon_a.ipynb): Biases of 20-year ICON-A(-ML) simulations in three key climate metrics
+- [Fig 4](icona_vs_iconamle_drivers_added_value/fig_4.pdf), [Code_1](icona_vs_iconamle_drivers_added_value/contribution_of_cloud_cover_scheme_iconaml_from_icona.ipynb), [Code_2](icona_vs_iconamle_drivers_added_value/contribution_of_cloud_cover_scheme_icona_from_iconaml.ipynb): Evaluation of schemes in opposing environment
+- [Fig 5](icona_vs_iconamle_drivers_added_value/fig_ix_contr.pdf), [Code](icona_vs_iconamle_drivers_added_value/contribution_of_ix_terms.ipynb): Contribution of terms in data-driven equation
+- [Fig 6](fig_6_plus4K/fig_6.pdf), [Code](fig_6_plus4K/cloud_sensitivities.ipynb): Cloud differences in +4K ICON-A-MLe simulations
 - [Fig S1](fig_S1_man_tuned/fig_S1.pdf), [Code](fig_S1_man_tuned/giorgetta_fig_7.ipynb): Climate metrics of three 10-year ICON-A simulations
 - [Fig S2](fig_S2_sensitivity/fig_S2.pdf), [Code](fig_S2_sensitivity/2402_sensitivity_analysis.ipynb): ICON-A sensitivity analysis
 - [Fig S3](simulation_scripts_and_evaluation/fig_S3.pdf): Zonal means of nine important climate variables from 20-year simulations
 - [Fig_S4](tuning_scripts/auto_tune_iconaml/fig_supp_ParamEvolDaily.pdf), [Code](parameter_evolution.ipynb): Evolution of ICON-A-MLe tuning parameters during day-long simulations
 - [Fig_S5](tuning_scripts/auto_tune_iconaml/fig_supp_ParamEvolYearly.pdf), [Code](parameter_evolution.ipynb): Evolution of ICON-A-MLe tuning parameters during year-long simulations
 - [Fig S6](simulation_scripts_and_evaluation/fig_S4.pdf): Like Fig. 2, but showing zonal means of the top of the atmosphere longwave and shortwave radiation
-- [Fig S7](fig_3_and_S5_biases/fig_S5.pdf), [Code_1](fig_3_and_S5_biases/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](fig_3_and_S5_biases/compare_icon_ml_to_icon_a.ipynb): (Bias) differences between the panels of each column in Fig. 3
+- [Fig S7](icona_vs_iconamle_drivers_added_value/fig_S5.pdf), [Code_1](icona_vs_iconamle_drivers_added_value/compare_icon_ml_to_icon_a_tuned.ipynb), [Code_2](icona_vs_iconamle_drivers_added_value/compare_icon_ml_to_icon_a.ipynb): (Bias) differences between the panels of each column in Fig. 3
 - [Fig S8](simulation_scripts_and_evaluation/fig_S6.pdf): Like Fig. 3, but showing column-integrated cloud ice (ice water path) for the ICON-A-MLe and the automatically tuned ICON-A model simulations
+- [Fig S9](fig_6_plus4K/fig_supp_ICONA4K.pdf), [Code](fig_6_plus4K/cloud_sensitivities.ipynb): Like Fig. 6, but using the manually tuned ICON-A baseline model to conduct the control and +4K warming scenario simulations
+- [Fig S10](fig_6_plus4K/fig_supp_precip_4K.pdf), [Code](fig_6_plus4K/cloud_sensitivities.ipynb): Precipitation metrics in warming scenarios
 
 ## Reproducing the results
 
