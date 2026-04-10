@@ -138,7 +138,7 @@ case "$ICON_SIM_LENGTH" in
     export output_interval="P1M" # from P6M
     ;;
   "year")
-    export end_date="${end_date:-1980-01-03T00:00:00Z}"
+    export end_date="${end_date:-1980-01-01T00:00:00Z}" # from 1980-01-03
     export output_interval="P1M" # from P1Y
     ;;
   *)
