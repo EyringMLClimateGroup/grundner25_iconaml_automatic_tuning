@@ -127,19 +127,19 @@ case "$ICON_SIM_LENGTH" in
     ;;
   "week")
     export end_date="${end_date:-1979-01-09T00:00:00Z}"
-    export output_interval="P7D"
+    export output_interval="P1D" # from P7D
     ;;
   "month")
     export end_date="${end_date:-1979-02-03T00:00:00Z}"
-    export output_interval="P1M"
+    export output_interval="P1D" # from P1M
     ;;
   "halfyear") # Wasn't very useful
     export end_date="${end_date:-1979-07-03T00:00:00Z}"
-    export output_interval="P6M"
+    export output_interval="P1M" # from P6M
     ;;
   "year")
     export end_date="${end_date:-1980-01-03T00:00:00Z}"
-    export output_interval="P1Y"
+    export output_interval="P1M" # from P1Y
     ;;
   *)
     echo "Invalid ICON_SIM_LENGTH: $ICON_SIM_LENGTH"
